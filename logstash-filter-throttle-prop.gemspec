@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-throttle-prop'
-  s.version       = '0.0.0'
+  s.version       = '0.1.0'
   s.licenses      = ['Apache License (2.0)']
   s.description   = 'A logstash filter plugin to throttle events per properties'
   s.summary       = s.description
