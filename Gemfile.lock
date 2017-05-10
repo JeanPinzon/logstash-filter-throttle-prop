@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    logstash-filter-throttle-prop (0.0.0)
+    logstash-filter-throttle-prop (0.1.0)
       logstash-core-plugin-api (~> 2.0)
 
 GEM
