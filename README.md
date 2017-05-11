@@ -4,7 +4,7 @@ This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
 It is fully free and fully open source. The license is Apache 2.0, meaning you are pretty much free to use it however you want in whatever way.
 
-The throttle-prop-filter is to throttle events per a dynamic property. The filter is configured with a key, a value and a limit. The key is used to group the values. If the values with a different content are inserted more than limit, it will be filtered.
+The logstash-filter-throttle-prop is to throttle events per a dynamic property. The filter is configured with a key, a value and a limit. The key is used to group the values. If the values with a different content are inserted more than limit, it will be filtered.
 
 
 ## How to install
