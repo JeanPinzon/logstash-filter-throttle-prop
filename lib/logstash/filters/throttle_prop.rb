@@ -14,22 +14,23 @@ require "logstash/namespace"
 # you would use the configuration:
 #
 # [source, ruby]
-#     key => "fixed_key"
+#     key => "%{property_key}"
 #     value => "%{type}"
 #     limit => 2
 #
 # Which would result in:
 # ==========================
-#     event 1  { type => 'a' } - not throttled
-#     event 2  { type => 'a' } - not throttled
-#     event 3  { type => 'b' } - not throttled
-#     event 4  { type => 'b' } - not throttled
-#     event 5  { type => 'c' } - throttled (successful filter)
-#     event 6  { type => 'c' } - throttled (successful filter)
-#     event 7  { type => 'a' } - not throttled
-#     event 8  { type => 'b' } - not throttled
-#     event 9  { type => 'c' } - throttled (successful filter)
-#     event 10 { type => 'd' } - throttled (successful filter)
+#     event 1  { property_key => 'some_key', type => 'a' } - not throttled
+#     event 2  { property_key => 'some_key', type => 'a' } - not throttled
+#     event 3  { property_key => 'some_key', type => 'b' } - not throttled
+#     event 4  { property_key => 'some_key', type => 'b' } - not throttled
+#     event 5  { property_key => 'some_key', type => 'c' } - throttled (successful filter)
+#     event 6  { property_key => 'some_key', type => 'c' } - throttled (successful filter)
+#     event 7  { property_key => 'some_key', type => 'a' } - not throttled
+#     event 8  { property_key => 'some_key', type => 'b' } - not throttled
+#     event 9  { property_key => 'some_key', type => 'c' } - throttled (successful filter)
+#     event 10 { property_key => 'some_key', type => 'd' } - throttled (successful filter)
+#     event 11  { property_key => 'other_key', type => 'd' } - not throttled
 
 class LogStash::Filters::ThrottleProp < LogStash::Filters::Base
 
@@ -48,20 +49,20 @@ class LogStash::Filters::ThrottleProp < LogStash::Filters::Base
 
   public
   def filter(event)
-    key = event.sprintf(@key)
-    value = event.sprintf(@value)
-    limit = event.sprintf(@limit).to_i
+    event_key = event.sprintf(@key)
+    event_value = event.sprintf(@value)
+    event_limit = event.sprintf(@limit).to_i
 
-    if @keys.has_key? @key
-      unless @keys[@key].include? value
-        if @keys[@key].length + 1 > limit
+    if @keys.has_key? event_key
+      unless @keys[event_key].include? event_value
+        if @keys[event_key].length + 1 > event_limit
           filter_matched(event)
         else
-          @keys[@key].push(value)
+          @keys[event_key].push(event_value)
         end
       end
     else
-      @keys[@key] = [value]
+      @keys[event_key] = [event_value]
     end
 
   end # def filter
